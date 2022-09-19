@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "534235861427",
+    "firebase_url": "https://foodie-poodie-default-rtdb.firebaseio.com",
+    "project_id": "foodie-poodie",
+    "storage_bucket": "foodie-poodie.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534235861427:android:f43ed1e7da1756921bbbc6",
+        "android_client_info": {
+          "package_name": "com.example.eatzers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "534235861427-iluook6af3shire45qijd2a9u6s8iijt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK51VinWssvYBVQVvGpNYpH6xWN_XzITk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "534235861427-iluook6af3shire45qijd2a9u6s8iijt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
