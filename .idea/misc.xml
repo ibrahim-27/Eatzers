@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Eatzers/app/src/main/res/drawable/corner_radius_bg.xml" value="0.13" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Eatzers/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.13" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Eatzers/app/src/main/res/drawable/ic_baseline_shopping_cart_24.xml" value="0.13" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Eatzers/app/src/main/res/layout/activity_home_screen.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Eatzers/app/src/main/res/layout/activity_main.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Eatzers/app/src/main/res/layout/rcv_chips_sample.xml" value="0.33" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Eatzers/app/src/main/res/layout/rcv_menulist_sample.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

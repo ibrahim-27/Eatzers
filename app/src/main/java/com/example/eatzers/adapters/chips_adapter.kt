@@ -23,7 +23,7 @@ class Chips_Adapter(var categoryList: List<String>, var context:Context): Recycl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChipsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.rcv_chips_sample, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.rcv_chips_sample, parent, false)
         return ChipsViewHolder(view)
     }
 
@@ -31,9 +31,9 @@ class Chips_Adapter(var categoryList: List<String>, var context:Context): Recycl
     override fun onBindViewHolder(holder: ChipsViewHolder, position: Int) {
         holder.chip.text = categoryList[position]
 
-        holder.chip.setOnCheckedChangeListener { chip, isChecked ->
-
-        }
+//        holder.chip.setOnCheckedChangeListener { chip, isChecked ->
+//
+//        }
     }
 
     override fun getItemCount(): Int {
