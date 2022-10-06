@@ -7,13 +7,27 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eatzers.adapters.Chips_Adapter
 import com.example.eatzers.adapters.Menu_Adapter
+import com.example.eatzers.adapters.OnChipClickListener
 import com.example.eatzers.databinding.ActivityHomeScreenBinding
 import com.example.eatzers.models.Menu
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.ArrayList
 
-class HomeScreen : AppCompatActivity() {
+class HomeScreen : AppCompatActivity(), OnChipClickListener {
+    /** Firbase Instances **/
     val firestore = Firebase.firestore
+
+    /** Variables **/
+    lateinit var menuList:ArrayList<Menu>
+    lateinit var categoryList:ArrayList<String>
+
+    lateinit var menuListAdapter:Menu_Adapter
+    lateinit var categoryListAdapter:Chips_Adapter
+
+    var MAX_ITEMS:Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityHomeScreenBinding.inflate(layoutInflater)
@@ -25,30 +39,39 @@ class HomeScreen : AppCompatActivity() {
         val rcv_menu = binding.rcvMenu
 
         /** Lists for recycler view - for category and menu **/
-        val menuList = ArrayList<Menu>()
-        val categoryList = ArrayList<String>()
+        menuList = ArrayList<Menu>()
+        categoryList = ArrayList<String>()
 
         /** Adapters - for category and menu **/
-        val categoryListAdapter = Chips_Adapter(categoryList, this)
-        val menuListAdapter = Menu_Adapter(menuList, this)
+        categoryListAdapter = Chips_Adapter(categoryList, this, this)
+        menuListAdapter = Menu_Adapter(menuList, this)
 
         /** Category list **/
-        categoryList.add("Hot")
+        categoryList.add("All")
         categoryList.add("Chicken")
         categoryList.add("Curry")
         categoryList.add("Rice")
         categoryList.add("Fish")
         categoryList.add("Fruits")
         categoryList.add("Icecreams")
-        categoryList.add("Soft Drinks")
+        categoryList.add("Drinks")
 
         rcv_category.adapter = categoryListAdapter
         rcv_category.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         /** Reading data from Firestore - food items **/
+        DefaultFoodItems()
+
+        rcv_menu.adapter = menuListAdapter
+        rcv_menu.layoutManager = GridLayoutManager(this, 2)
+
+    }
+
+    private fun DefaultFoodItems() {
+        menuList.clear()
         firestore.collection("foodItems")
             .get().addOnSuccessListener{result->
-
+                MAX_ITEMS = result.size()
                 for (document in result.documents)
                 {
                     menuList.add(Menu(document.data?.get("id").toString(),
@@ -62,10 +85,69 @@ class HomeScreen : AppCompatActivity() {
             .addOnFailureListener{exception->
                 Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT).show()
             }
+    }
 
+    override fun OnChipClick(text: String, isChecked: Boolean) {
+        if(isChecked)
+        {
+            if(text == "All")
+            {
+                DefaultFoodItems()
+                return
+            }
 
-        rcv_menu.adapter = menuListAdapter
-        rcv_menu.layoutManager = GridLayoutManager(this, 2)
+            if(menuList.size == MAX_ITEMS)
+                menuList.clear()
 
+            /** Getting food items of specific category **/
+            firestore.collection("foodItems")
+                .get().addOnSuccessListener{result->
+
+                    for (document in result.documents)
+                    {
+                        if(!(document.data?.get("category").toString().equals(text.replace(" ", ""), true)))
+                            continue
+
+                        menuList.add(Menu(document.data?.get("id").toString(),
+                            document.data?.get("title").toString(),
+                            document.data?.get("category").toString(),
+                            document.data?.get("imageURL").toString(),
+                            document.data?.get("price").toString()))
+                    }
+
+                    menuListAdapter.notifyDataSetChanged()
+
+                }
+                .addOnFailureListener{exception->
+                    Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT).show()
+                }
+        }
+        else
+        {
+            /** Getting food items of specific category **/
+            firestore.collection("foodItems")
+                .get().addOnSuccessListener{result->
+
+                    for (document in result.documents)
+                    {
+                        if(!(document.data?.get("category").toString().equals(text.replace(" ", ""), true)))
+                            continue
+
+                        val tempItem = Menu(document.data?.get("id").toString(),
+                            document.data?.get("title").toString(),
+                            document.data?.get("category").toString(),
+                            document.data?.get("imageURL").toString(),
+                            document.data?.get("price").toString())
+
+                        menuList.remove(tempItem)
+                    }
+
+                    menuListAdapter.notifyDataSetChanged()
+
+                }
+                .addOnFailureListener{exception->
+                    Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 }
